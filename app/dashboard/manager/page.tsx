@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, Row, Col, Statistic, Table, Button, Typography, Input, Select, Space, Badge, Form, Descriptions } from 'antd';
 import { useRouter } from 'next/navigation';
 import { UsergroupAddOutlined, CheckCircleOutlined, PauseCircleOutlined, WarningOutlined, SearchOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
@@ -31,6 +31,18 @@ export default function ManagerDashboard() {
   const [roleFilter, setRoleFilter] = useState('all');
   const router = useRouter();
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue({
+      lat: mapState.lat,
+      lng: mapState.lng,
+    });
+  }, [mapState.lat, mapState.lng, form]);
+
+  const handleMapClick = (coords: { lng: number; lat: number }) => {
+    setMapState({ ...mapState, lng: coords.lng, lat: coords.lat });
+    form.setFieldsValue({ lat: coords.lat, lng: coords.lng });
+  };
 
   const handlePerimeterChange = (values: any) => {
     const newLat = parseFloat(values.lat);
@@ -103,7 +115,7 @@ export default function ManagerDashboard() {
         <Col xs={24} lg={16}>
           <Card title="Live Map" style={{ borderRadius: '12px', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)', height: '100%', border: '1px solid #e5e7eb' }}>
             <div style={{ height: 400, borderRadius: '8px', overflow: 'hidden' }}>
-              <Map lat={mapState.lat} lng={mapState.lng} zoom={12} />
+              <Map lng={mapState.lng} lat={mapState.lat} zoom={12} onMapClick={handleMapClick} />
             </div>
           </Card>
         </Col>

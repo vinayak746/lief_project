@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Button, 
   Card, 
@@ -32,6 +32,7 @@ import MetricCard from './components/MetricCard';
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
+import { message } from 'antd';
 
 // Simple custom chart component
 const SimpleChart = ({ data }: { data: Array<{ day: string; hours: number; color: string }> }) => {
@@ -80,6 +81,39 @@ const SimpleChart = ({ data }: { data: Array<{ day: string; hours: number; color
 
 export default function CareTakerDashboard() {
   const [isClockedIn, setIsClockedIn] = useState(false);
+  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null);
+  const [locationError, setLocationError] = useState<string | null>(null);
+
+  const handleClockIn = () => {
+    if (!navigator.geolocation) {
+      const errorMsg = 'Geolocation is not supported by your browser.';
+      setLocationError(errorMsg);
+      message.error(errorMsg);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+        setLocationError(null);
+        setIsClockedIn(true);
+        message.success('Clocked in successfully!');
+      },
+      () => {
+        const errorMsg = 'Unable to retrieve your location. Please enable location services.';
+        setLocationError(errorMsg);
+        message.error(errorMsg);
+      }
+    );
+  };
+
+  const handleClockOut = () => {
+    setIsClockedIn(false);
+    message.success('Clocked out successfully!');
+  };
   
   const chartData = [
     { day: 'Mon', hours: 8, color: '#1890ff' },
@@ -132,7 +166,7 @@ export default function CareTakerDashboard() {
         </Col>
         <Col xs={24} lg={8}>
           <Card title="Clock In / Clock Out" style={{ height: '100%', borderRadius: '12px', textAlign: 'center', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)', border: '1px solid #e5e7eb' }}>
-            <Space direction="vertical" size="large" style={{ width: '100%', alignItems: 'center' }}>
+            <Space direction="vertical" size="large" style={{ width: '90%', margin: '0 auto' }}>
               <div style={{marginTop: '20px'}}>
                 <Badge status={isClockedIn ? "success" : "error"} text={isClockedIn ? "You are clocked in" : "You are clocked out"} />
               </div>
@@ -141,34 +175,19 @@ export default function CareTakerDashboard() {
                 type="primary"
                 size="large"
                 icon={<LoginOutlined />}
-                style={{
-                  background: isClockedIn ? '#f0f0f0' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  borderColor: isClockedIn ? '#d9d9d9' : 'transparent',
-                  height: 'auto',
-                  padding: '20px 40px',
-                  fontSize: '24px',
-                }}
-                onClick={() => setIsClockedIn(true)}
-                disabled={isClockedIn}
+                style={{ width: '100%', height: '50px', fontSize: '18px' }}
+                onClick={handleClockIn}
+                disabled={isClockedIn || !!locationError}
               >
                 Clock In
               </Button>
               <Button
-                danger
                 type="primary"
+                danger
                 size="large"
                 icon={<LogoutOutlined />}
-                style={{
-                  width: '80%',
-                  marginTop: '10px',
-                  background: !isClockedIn ? '#f0f0f0' : 'linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)',
-                  borderColor: !isClockedIn ? '#d9d9d9' : 'transparent',
-                  boxShadow: !isClockedIn ? 'none' : '0 4px 15px rgba(0, 0, 0, 0.2)',
-                  height: 'auto',
-                  padding: '20px 40px',
-                  fontSize: '24px',
-                }}
-                onClick={() => setIsClockedIn(false)}
+                style={{ width: '100%', height: '50px', fontSize: '18px' }}
+                onClick={handleClockOut}
                 disabled={!isClockedIn}
               >
                 Clock Out
