@@ -257,7 +257,7 @@ export default function CareTakerDashboard() {
             value={41}
             icon={<ClockCircleOutlined />}
             color="#1890ff"
-            note="of 40 hours"
+            note="of 120 hours"
           />
         </Col>
         <Col xs={24} sm={8}>
