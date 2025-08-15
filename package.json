@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.24.0",
@@ -21,14 +22,19 @@
     "antd": "^5.26.7",
     "graphql": "^16.11.0",
     "graphql-tag": "^2.12.6",
+    "leaflet": "^1.9.4",
+    "mapbox-gl": "^3.14.0",
     "maplibre-gl": "^5.6.2",
     "next": "^15.4.6",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-leaflet": "^5.0.0",
+    "react-map-gl": "^8.0.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/leaflet": "^1.9.20",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

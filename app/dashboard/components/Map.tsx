@@ -21,7 +21,7 @@ const Map: React.FC<MapProps> = ({ lng, lat, zoom, onMapClick }) => {
 
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: `https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL`,
+      style: `https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`,
       center: [lng, lat],
       zoom: zoom,
     });

@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import dynamic from 'next/dynamic';
 import {
   Button,
   Card,
@@ -126,6 +127,11 @@ const SimpleChart = ({
 };
 
 export default function CareTakerDashboard() {
+  const Map = useMemo(() => dynamic(() => import('./components/Map'), { 
+    loading: () => <p>A map is loading...</p>,
+    ssr: false 
+  }), []);
+
   const [isClockedIn, setIsClockedIn] = useState(false);
   const [location, setLocation] = useState<{ lat: number; lon: number } | null>(
     null
@@ -277,6 +283,22 @@ export default function CareTakerDashboard() {
             color="#faad14"
             note="days requested"
           />
+        </Col>
+      </Row>
+
+      <Row gutter={[24, 24]} style={{ marginBottom: "24px" }}>
+        <Col span={24}>
+          <Card title="Your Location" style={{ borderRadius: "12px", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)", border: "1px solid #e5e7eb" }}>
+            <div style={{ height: 400 }}>
+              {location ? (
+                <Map lat={location.lat} lng={location.lon} zoom={15} />
+              ) : (
+                <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Text type="secondary">Clock in to see your location on the map.</Text>
+                </div>
+              )}
+            </div>
+          </Card>
         </Col>
       </Row>
 
