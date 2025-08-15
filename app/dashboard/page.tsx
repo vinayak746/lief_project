@@ -249,7 +249,7 @@ export default function CareTakerDashboard() {
         }}
       >
         <Title level={3} style={{ color: "white", margin: 0 }}>
-          Worker Dashboard
+          CareTaker Dashboard
         </Title>
         <Text style={{ color: "white", opacity: 0.9 }}>
           Clock in/out, track your work, and review your shifts.
