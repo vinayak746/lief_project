@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0"; // make sure you import from /client
 import { Typography, Button } from "antd";
 import Image from "next/image";
-
+import Loading from "@/components/loading";
 const { Text } = Typography;
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
   if (isLoading) {
     return (
       <main className="p-8 flex items-center justify-center min-h-screen">
-        <Text>Loading...</Text>
+        <Loading />
       </main>
     );
   }
