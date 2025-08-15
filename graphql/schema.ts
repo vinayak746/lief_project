@@ -5,6 +5,7 @@ export const typeDefs = gql`
     id: ID!
     email: String!
     name: String!
+    picture: String!
     createdAt: DateTime!
   }
 
@@ -12,6 +13,6 @@ export const typeDefs = gql`
 
   type Query {
     getUsers: [User!]!
-    createUser(name: String!, email: String!): User!
+    createUser(name: String!, email: String!, picture: String!): User!
   }
 `;

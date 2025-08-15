@@ -1,30 +1,29 @@
-"use client";
 import { useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0"; // make sure you import from /client
 import { Typography, Button } from "antd";
 import Image from "next/image";
 import Loading from "@/components/loading";
 const { Text } = Typography;
+import { gql } from "graphql-tag";
+import { useQuery } from "@apollo/client";
+import apolloClient from "@/lib/apollo-client";
+import { GetServerSidePropsContext } from "next";
+import { auth0 } from "@/lib/auth0";
 
-export default function Home() {
-  const { user, isLoading } = useUser();
+export default async function Home() {
+  const session = await auth0.getSession();
+  const user = session?.user;
 
-  // useEffect(() => {
-  //   if (!isLoading && !user) {
-  //     window.location.href = "/auth/login";
-  //   }
-  // }, [isLoading, user]);
-
-  if (isLoading) {
-    return (
-      <main className="p-8 flex items-center justify-center min-h-screen">
-        <Loading />
-      </main>
-    );
+  if (!user) {
+    return "lol";
   }
 
-  // if (!user) {
-  //   return "user not found";
+  // if (isLoading) {
+  //   return (
+  //     <main className="p-8 flex items-center justify-center min-h-screen">
+  //       <Loading />
+  //     </main>
+  //   );
   // }
 
   return (
