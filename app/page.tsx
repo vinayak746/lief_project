@@ -37,7 +37,7 @@ export default async function Home() {
         priority
       />
       <div className="flex flex-col items-center gap-4">
-        <Text>Welcome, {user?.name}!</Text>
+        <Text>Welcome {user?.name}!</Text>
         <a href="/auth/login">
           <Button type="default">
             <Text>Login</Text>
