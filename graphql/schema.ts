@@ -12,6 +12,7 @@ export const typeDefs = gql`
   scalar DateTime
 
   type Query {
+    me: User
     getUsers: [User!]!
     createUser(name: String!, email: String!, picture: String!): User!
   }

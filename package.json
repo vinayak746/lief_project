@@ -15,6 +15,7 @@
     "@ant-design/nextjs-registry": "^1.1.0",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@apollo/client": "^3.13.9",
+    "@apollo/experimental-nextjs-app-support": "^0.12.3",
     "@apollo/server": "^5.0.0",
     "@as-integrations/next": "^4.0.0",
     "@auth0/nextjs-auth0": "^4.9.0",

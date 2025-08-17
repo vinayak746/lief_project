@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import "@ant-design/v5-patch-for-react-19";
 import "./globals.css";
-import apolloClient from "@/lib/apollo-client";
+import { ApolloProviders } from "@/components/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,10 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AntdRegistry>{children}</AntdRegistry>
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
+        <ApolloProviders>
+          <AntdRegistry>{children}</AntdRegistry>
+        </ApolloProviders>
       </body>
     </html>
   );

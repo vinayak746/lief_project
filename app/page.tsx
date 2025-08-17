@@ -1,77 +1,74 @@
 "use client";
-import { useEffect } from "react";
 
-import { useUser } from "@auth0/nextjs-auth0"; // make sure you import from /client
-import { Typography, Button } from "antd";
-import Image from "next/image";
-import Loading from "@/components/loading";
-import { gql } from "graphql-tag";
-import { useQuery } from "@apollo/client";
-import apolloClient from "@/lib/apollo-client";
-import { GetServerSidePropsContext } from "next";
-import { auth0 } from "@/lib/auth0";
+import { gql, useQuery } from "@apollo/client";
 import { redirect } from "next/navigation";
+import Loading from "@/components/loading";
 
-const ME = gql`
-  query {
+const ME_QUERY = gql`
+  query Me {
     me {
       id
       email
       name
+      createdAt
     }
   }
 `;
 
 export default function Home() {
-  // const session = await auth0.getSession();
-  // const user = session?.user;
-
-  // if (!user) {
-  //   return "lol"getUsers;
-  // }
-
-  // if (isLoading) {
-  //   return (
-  //     <main className="p-8 flex items-center justify-center min-h-screen">
-  //       <Loading />
-  //     </main>
-  //   );
-  // }
-
-  const { data, loading } = useQuery(ME);
-
-  console.table({
-    data,
-    loading,
+  const { data, loading, error } = useQuery(ME_QUERY, {
+    fetchPolicy: "cache-first",
   });
 
-  return "lol";
+  if (loading) {
+    return (
+      <main className="p-8 flex items-center justify-center min-h-screen">
+        <Loading />
+      </main>
+    );
+  }
 
-  // if (!session) {
-  //   return redirect("/auth/login");
-  // }
+  if (error || !data?.me) {
+    redirect("/auth/login");
+  }
 
-  // return (
-  //   <main className="p-8 flex items-center justify-center min-h-screen">
-  //     <Image
-  //       className="dark:invert mb-8"
-  //       src="/next.svg"
-  //       alt="Next.js logo"
-  //       width={180}
-  //       height={38}
-  //       priority
-  //     />
-  //     <div className="flex flex-col items-center gap-4">
-  //       Welcome, {user?.name}!{" "}
-  //       <a href="/auth/logout">
-  //         <Button type="default" danger>
-  //           Logout
-  //         </Button>
-  //       </a>
-  //       <pre className="mt-8 bg-gray-100 p-4 rounded-lg overflow-x-auto">
-  //         {JSON.stringify(user, null, 2)}
-  //       </pre>
-  //     </div>
-  //   </main>
-  // );
+  const user = data.me;
+
+  return (
+    <main className="p-8 max-w-4xl mx-auto">
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex items-center space-x-4 mb-6">
+          {user.picture && (
+            <img
+              src={user.picture}
+              alt={user.name || "User"}
+              className="w-16 h-16 rounded-full"
+            />
+          )}
+          <div>
+            <h1 className="text-2xl font-bold">Welcome back, {user.name}!</h1>
+            <p className="text-gray-600">{user.email}</p>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Your Information</h2>
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-500">User ID</p>
+                <p className="font-medium">{user.id}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Member Since</p>
+                <p className="font-medium">
+                  {new Date(user.createdAt).toDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
 }

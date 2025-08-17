@@ -21,24 +21,31 @@ export const gqlHandler = startServerAndCreateNextHandler(apolloServer, {
 
     const { name, email, picture } = session.user;
 
-    if (!(name && email && picture))
-      return {
-        prisma,
-        user: null,
-      };
+    if (!(name && email && picture)) {
+      return { prisma, user: null };
+    }
 
-    const newUser = prisma.user.upsert({
+    // Ensure we await the user upsert operation
+    const user = await prisma.user.upsert({
       where: { email },
-      update: { email, name, picture },
+      update: { name, picture },
       create: {
         name,
         email,
         picture,
       },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        picture: true,
+        createdAt: true
+      }
     });
+
     return {
       prisma,
-      user: newUser,
+      user
     };
   },
 });

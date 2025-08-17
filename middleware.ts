@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth0 } from "./lib/auth0";
 
-console.log(process.env);
-
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const session = await auth0.getSession(request);
   // console.log({ session });
