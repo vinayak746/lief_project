@@ -5,8 +5,6 @@ import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { NextRequest } from "next/server";
 import { gqlHandler } from "../graphql";
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
-
 export const config = {
   api: {
     bodyParser: false,

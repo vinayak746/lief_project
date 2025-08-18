@@ -13,7 +13,9 @@ export const resolvers = {
     getUsers: async () => {
       return prisma.user.findMany();
     },
-    createUser: async (
+  },
+  Mutation: {
+    login: async (
       _: unknown,
       args: { name: string; email: string; picture: string }
     ) => {

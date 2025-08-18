@@ -1,4 +1,4 @@
-import { gql } from "graphql-tag";
+import { gql } from "@apollo/client";
 
 export const typeDefs = gql`
   type User {
@@ -7,6 +7,7 @@ export const typeDefs = gql`
     name: String!
     picture: String!
     createdAt: DateTime!
+    lastLogin: DateTime
   }
 
   scalar DateTime
@@ -15,5 +16,9 @@ export const typeDefs = gql`
     me: User
     getUsers: [User!]!
     createUser(name: String!, email: String!, picture: String!): User!
+  }
+
+  type Mutation {
+    login: User!
   }
 `;

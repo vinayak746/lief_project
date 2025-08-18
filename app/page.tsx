@@ -3,6 +3,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { redirect } from "next/navigation";
 import Loading from "@/components/loading";
+import { Button } from "antd";
 
 const ME_QUERY = gql`
   query Me {
@@ -11,6 +12,7 @@ const ME_QUERY = gql`
       email
       name
       createdAt
+      lastLogin
     }
   }
 `;
@@ -35,7 +37,7 @@ export default function Home() {
   const user = data.me;
 
   return (
-    <main className="p-8 max-w-4xl mx-auto">
+    <main className="p-8 max-w-4xl mx-auto min-h-screen flex flex-col justify-between w-full">
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center space-x-4 mb-6">
           {user.picture && (
@@ -65,9 +67,20 @@ export default function Home() {
                   {new Date(user.createdAt).toDateString()}
                 </p>
               </div>
+              <div>
+                <p className="text-sm text-gray-500">Last Login</p>
+                <p className="font-medium">
+                  {new Date(user.lastLogin).toDateString()}
+                </p>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="w-full flex justify-end">
+        <a href="/auth/logout">
+          <Button danger>Logout</Button>
+        </a>
       </div>
     </main>
   );

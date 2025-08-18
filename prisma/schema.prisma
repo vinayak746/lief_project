@@ -19,4 +19,5 @@ model User {
   email     String    @unique
   picture   String
   createdAt DateTime  @default(now())
+  lastLogin DateTime?
 }
